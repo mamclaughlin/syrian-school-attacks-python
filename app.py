@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify
 import pymongo
 import json
 from bson import json_util, ObjectId
-from keys import admin, pw
+import keys
 import urllib.parse
 #define app
 app = Flask(__name__)
