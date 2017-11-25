@@ -12,7 +12,7 @@ app = Flask(__name__)
 conn = "mongodb://" +  Keys.admin + ":" + urllib.parse.quote_plus(Keys.pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
 
 client = pymongo.MongoClient(conn)
-db = client.syria_db
+db = client.get_default_database()
 
 @app.route("/")
 def index():
