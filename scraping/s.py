@@ -22,7 +22,9 @@ pageMax = int(soup.find('a', class_="last").text) + 1
 #MONGO SETUP
 ######################################
 # Initialize PyMongo to work with MongoDBs
-conn = "mongodb://" +  keys.admin + ":" + urllib.parse.quote_plus(keys.pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
+# conn = "mongodb://" +  keys.admin + ":" + urllib.parse.quote_plus(keys.pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
+conn = "mongodb://admin:ADMIN1234@ds121456.mlab.com:21456/heroku_63785bfl"
+
 #'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 

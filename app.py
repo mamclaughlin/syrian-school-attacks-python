@@ -3,12 +3,13 @@ import pymongo
 import json
 from bson import json_util, ObjectId
 import keys
-import urllib.parse
+# import urllib.parse
+# urllib.parse.quote_plus(keys.pw)
 #define app
 app = Flask(__name__)
 
 #DB information
-conn = "mongodb://" +  keys.admin + ":" + urllib.parse.quote_plus(keys.pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
+conn = "mongodb://admin:ADMIN1234@ds121456.mlab.com:21456/heroku_63785bfl"
 
 client = pymongo.MongoClient(conn)
 db = client.heroku_63785bfl
