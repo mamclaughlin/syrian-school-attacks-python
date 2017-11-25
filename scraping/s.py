@@ -7,7 +7,7 @@ import time
 import requests
 import pymongo
 import re
-import keys
+# import keys
 import urllib.parse
 
 executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
