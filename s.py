@@ -27,7 +27,7 @@ conn = "mongodb://" +  Keys.admin + ":" + urllib.parse.quote_plus(Keys.pw) + "@d
 client = pymongo.MongoClient(conn)
 
 # Define database and collection
-db = client.get_default_database()
+db = client.heroku_63785bfl
 collection = db.items
 
 ######################################

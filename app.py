@@ -2,13 +2,13 @@ from flask import Flask, render_template, jsonify
 import pymongo
 import json
 from bson import json_util, ObjectId
-import Keys
+from Keys import admin, pw
 import urllib.parse
 #define app
 app = Flask(__name__)
 
 #DB information
-conn = "mongodb://" +  Keys.admin + ":" + urllib.parse.quote_plus(Keys.pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
+conn = "mongodb://" +  admin + ":" + urllib.parse.quote_plus(pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
 
 client = pymongo.MongoClient(conn)
 db = client.heroku_63785bfl
