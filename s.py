@@ -8,7 +8,7 @@ import requests
 import pymongo
 import re
 import Keys
-import urllib 
+import urllib.parse
 
 executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
 browser = Browser('chrome', **executable_path, headless=True)
