@@ -26,4 +26,4 @@ def api():
     return json.dumps(schools, sort_keys=True, indent=4, default=json_util.default)
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
