@@ -3,20 +3,21 @@ import pymongo
 import json
 from bson import json_util, ObjectId
 import Keys
+import urllib 
 #define app
 app = Flask(__name__)
 
+
 #DB information
-conn = 'mongodb://' + Keys.user + ':' + Keys.password + '@ds121456.mlab.com:21456/heroku_63785bfl'
-# conn = "mongodb://localhost:27017"
+conn = "mongodb://" +  Keys.admin + ":" + urllib.parse.quote_plus(Keys.pw) + "@ds121456.mlab.com:21456/heroku_63785bfl"
+
 client = pymongo.MongoClient(conn)
 db = client.syria_db
 
 @app.route("/")
 def index():
-    schools = list(db.items.find())
 
-    return render_template("index.html", schools=schools)
+    return render_template("index.html")
 
 @app.route("/api/v1/")
 def api():
