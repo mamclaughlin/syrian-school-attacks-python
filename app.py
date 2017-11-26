@@ -21,9 +21,10 @@ def index():
 
 @app.route("/api/v1/")
 def api():
-    schools = list(db.items.find())
+	# sort = {'date': -1}
+	schools = list(db.items.find().sort([('_id', 1)]))
 
-    return json.dumps(schools, sort_keys=True, indent=4, default=json_util.default)
+	return json.dumps(schools, sort_keys=True, indent=4, default=json_util.default)
     
 if __name__ == "__main__":
     app.run(debug=False)

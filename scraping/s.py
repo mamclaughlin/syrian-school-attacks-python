@@ -7,6 +7,7 @@ import time
 import requests
 import pymongo
 import re
+import datetime
 # import keys
 import urllib.parse
 
@@ -74,9 +75,6 @@ for x in range(1,pageMax):
 ######################################
 #TEXT COLLECTION STEP
 ######################################
-#collect urls, then go into them and get info
-text = []
-
 #iterate through urls array we created in first step, then grab the designated text and push to array
 for getUrl in urls:
 	executable_path = {'executable_path': '/usr/local/bin/chromedriver'}
@@ -89,84 +87,81 @@ for getUrl in urls:
 	try:
 		#get url from array of urls
 		browser.visit(getUrl)
-		full_text = soup.body.find('h5').text.lower()
+		full_text = soup.body.find('h5').text.rstrip().lstrip().lower().replace('snhr: ', '')
 
-		if 'school' in full_text or 'School' in full_text:
+		if 'school' in full_text:
 		#find summary from each page
-			
+			#increment 1 for each id
+			id_num = datetime.datetime.utcnow()
+
 			#find who fired
 			who_fired = full_text[7:35].replace('fire', '').lower()
 
-			# date
-			date = full_text[-20:-2]
-			#strips off everything before the date so output is i.e: January 20, 2017 
-			new_date = re.sub('^(.*)(?=(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep(tember)?|oct(ober)?|nov(ember)?|dec(ember)?))', '', date)
+			#date
+			new_date = re.sub('^(.*)(?=(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|jun(e)?|jul(y)?|aug(ust)?|sep(tember)?|oct(ober)?|nov(ember)?|dec(ember)?))', '', full_text)
+			filtered_date = re.sub('(?<=20\d\d).*$', '', new_date)
 
 			#school
 			pattern = re.compile(r" on | near ")
 			school = (pattern.split(full_text)[1]).split("school")[0] + "school"
-
-			#level of damage
-			# damage = 
-
-			#append full text to array
-			text.append(full_text)
-
 			#===================
 
-			attackers = ['suspected Russian warplanes', 'regime warplanes', 'armed opposition', 'government warplanes',
-			'government warplanes (allies)','government helicopters','government forces','ISIS artillery','Syrian-Russian alliance warplanes',
+			attackers = ['suspected russian warplanes', 'regime warplanes', 'armed opposition', 'government warplanes',
+			'government warplanes (allies)','government helicopters','government forces','isis artillery','syrian-russian alliance warplanes',
 			'armed opposition factions','International Coalition warplanes', 'local made rocket shells', 'unknown-source']
 
 			count = 0
 
 			#iterate through list of possible attackers
 			for attacker in attackers:
-
-				if attacker in full_text:
+				if attacker.lower() in full_text:
 					count += 1
 					if count > 0:
 
-						# print('-----------')
-						# print('school: ')
-						# print(school)
-						# print('attacker: ' + attacker)
-						# print('date: ' + new_date)
-						# print('full text: ' + full_text)
-						# print('url: ' + getUrl)
+						print('-----------')
+						print('school: ')
+						print(school)
+						print('attacker: ' + attacker)
+						print('date: ' + filtered_date)
+						print('full text: ' + full_text)
+						print('url: ' + getUrl)
 
 						# Dictionary to be inserted as a MongoDB document
 						post = {
 						    'who_fired': attacker,
 						    'school': school,
-						    'date': new_date,
-						    'link': getUrl,
+						    'date': filtered_date,
 						    'full_text': full_text,
+						    'link': getUrl,
+						    'id': id_num,
+						    
 						}	
 						collection.insert_one(post)
 
 					else:
 						who_fired = item[7:35].replace('fire', '')
 
-						# print('-----------')
-						# print('school: ')
-						# print(school)
-						# print('attacker: ' + who_fired)
-						# print('date: ' + new_date)
-						# print('-----------')
-						# print('full text: ' + full_text)
-						# print('url: ' + getUrl)
+						print('-----------')
+						print('school: ')
+						print(school)
+						print('attacker: ' + who_fired)
+						print('date: ' + filtered_date)
+						print('-----------')
+						print('full text: ' + full_text)
+						print('url: ' + getUrl)
 
 						# Dictionary to be inserted as a MongoDB document
 						post = {
 						    'who_fired': who_fired,
 						    'school': school,
-						    'date': new_date,
-						    'link': getUrl,
+						    'date': filtered_date,
 						    'full_text': full_text,
+						    'link': getUrl,
+						    'id': id_num,
+						    
 						}
 						collection.insert_one(post)
-
+					continue
 	except Exception as e:
 		print(e)
 
